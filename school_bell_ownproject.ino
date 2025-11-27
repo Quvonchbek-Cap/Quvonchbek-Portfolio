@@ -47,10 +47,13 @@ void loop() {
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print("Soat:");
+  if (myRTC.hours < 10) lcd.print("0");
   lcd.print(myRTC.hours);
   lcd.print(":");
+  if (myRTC.minutes < 10) lcd.print("0");
   lcd.print(myRTC.minutes);
   lcd.print(":");
+  if (myRTC.seconds < 10) lcd.print("0");
   lcd.print(myRTC.seconds);
 
 
