@@ -37,7 +37,7 @@ void setup() {
   lcd.backlight();
 
   // Bir marta vaqt o‘rnatiladi va ushbu kodni komentaryiaga olib yana kod yuklanadi:
-  // myRTC.setDS1302Time(25, 52, 17, 2, 21, 11, 2025);
+  // myRTC.setDS1302Time(10, 17, 12, 4, 27, 11, 2025);
 }
 
 void loop() {
@@ -65,13 +65,7 @@ void loop() {
 
   schoolbell();
   nextbell();
-
-  if (digitalRead(3) == 1) 
-  {
-    digitalWrite(2, 1);
-    Serial.println("Qo'ng'iroq qo'lda yoqildi");
-  }
-
+  button();
   delay(200);
 }
 
@@ -84,9 +78,10 @@ void schoolbell()
     if (myRTC.hours == bellTimes[i][0] &&
         myRTC.minutes == bellTimes[i][1] &&
         myRTC.seconds >= 1 && myRTC.seconds <= 4) {
-
       digitalWrite(2, HIGH);  
+      tone(12, 500, 1000);
       delay(1000);
+      noTone(12);
       digitalWrite(2, LOW);
       delay(1000);
     }
@@ -94,12 +89,9 @@ void schoolbell()
 }
 void nextbell()
 {
+  
+  bool found = false;
   if (myRTC.dayofweek < 1 || myRTC.dayofweek > 6) return;
-  if (myRTC.hours >= 17) 
-  {
-    lcd.setCursor(0, 1);
-    lcd.print("Keyingi:08:30:00");
-  }
   for (int i = 0; i < bellCount; i++) 
   {
     if (myRTC.hours < bellTimes[i][0] ||
@@ -113,6 +105,33 @@ void nextbell()
           if (bellTimes[i][1] < 10) lcd.print("0");
           lcd.print(bellTimes[i][1]);
           lcd.print(":00");
+          found = true;
+          break;
         }
   }
+  if (!found) 
+    {
+      lcd.setCursor(0, 1);
+      lcd.print("Keyingi:");
+      lcd.print(bellTimes[0][0]);
+      lcd.print(":");
+      lcd.print(bellTimes[0][1]);
+      lcd.print(":00");
+      return;
+    }
+}
+void button()
+{
+   if (digitalRead(3) == 1) 
+  {
+    digitalWrite(2, 1);
+    tone(12, 500, 1000);
+    Serial.println("qolda yoqildi");
+  }
+  else 
+  {
+    digitalWrite(2, 0);
+    noTone(12);
+  }
+  delay(100);
 }
