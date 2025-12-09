@@ -6,7 +6,7 @@
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 virtuabotixRTC myRTC(6, 7, 8);
 
-// Qo‘ng‘iroq vaqtlarini massiv ko‘rinishida saqlaymiz
+// Qo‘ng‘iroq chalish vaqtlarini massiv ko‘rinishida saqlash
 int bellTimes[][2] = {
   {8, 30},
   {9, 15},
